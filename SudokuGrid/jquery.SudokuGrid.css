@@ -4,6 +4,11 @@
 	border-spacing:  0px 0px 0px 0px;
 	display: inline-block;
 }
+
+.readonly{
+	background-color:#F7F7F7;	
+}
+
 #sudokugrid tbody > tr  > td {
 	height:60px;
 	width:60px;

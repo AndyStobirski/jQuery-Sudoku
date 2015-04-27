@@ -48,17 +48,13 @@
                 $(this).data("SudokuGrid", new $.SudokuGrid(this, settings));
             });
         },
-        reset: function(pCell, pValues) {
+        reset: function() {
             return this.data("SudokuGrid").reset();
         },		
 		
-        setcell: function(pCell, pValues) {
-            this.data("SudokuGrid").setcell(pCell, pValues);
+        setcell: function(pCell, pValuesArray) {
+            this.data("SudokuGrid").setcell(pCell, pValuesArray);
         },
-		
-        setcellvalue: function(pCell, pValuesArray) {
-            this.data("SudokuGrid").setcellvalue(pCell, pValuesArray);
-        },		
 		
 		targetcell: function (pCell, pValues){
 			this.data("SudokuGrid").targetcell(pCell, pValues, "targetCell");
@@ -71,6 +67,13 @@
 		sourcecell: function (pCell, pValues){
 			this.data("SudokuGrid").sourcecell(pCell, pValues, "sourceCell");
 		},		
+		
+		properties: function (pProperties){
+			
+			console.log (pProperties);
+			
+			this.data("SudokuGrid").properties(pProperties);
+		},					
 		
         destroy: function() {
             if (this.data("SudokuGrid")) {
@@ -131,7 +134,8 @@
 		$source_element.after($container_element);
 		$source_element.hide();
 
-		buildArray();			
+		buildArray();		
+		RefreshProperties();
 		
 		$container_element.keyup(function(event) {
 			event.preventDefault();		
@@ -198,6 +202,32 @@
 
 
         //<private functions>
+		
+		function RefreshProperties(){
+					
+			if ($(input).data("settings").readOnly){		
+				$container_element.addClass("readonly");
+			}
+			else{
+				$container_element.removeClass("readonly");
+			}						
+		}
+		
+		function RedrawGrid(){
+			
+			for (x = 0; x < 9; x ++)
+				for (y = 0; y < 9; y ++)
+					if (cells[x][y].values.length > 1)
+						cells[x][y].draw();
+				
+			
+		}
+		
+		function properties (pProperties){		            
+			$(input).data("settings",  $.extend({}, DEFAULT_SETTINGS, pProperties || {}));				
+			RefreshProperties();
+		}
+		
 		
 		//	
 		//	Build the array cellArray, a 2d array containing an object
@@ -356,39 +386,7 @@
 				cell.values = pValue;
 			}
 			cell.draw();	
-			
-						
-			// if ($.isArray(pValue)){//an array, so set
-				// cell.values = pValue;
-			// }
-			// else if (pValue == 0){//if 0
-							
-				// //if contains multi values set to value 1
-				// if (cell.values == null || cell.values.length > 1){
-					// cell.values = [1];
-				// }
-				// else{//only 1 value, toggle to all 9
-					// cell.values = [1,2,3,4,5,6,7,8,9];
-				// }				
-			// }
-			// else{
-				
-				// if (cell.values.length > 1){	//cell contains multiple values
-					
-					// if (cell.values.indexOf(pValue) == -1){//cell doesn't contain value, add it
-						// cell.values[pValue-1] = pValue;
-					// }
-					// else{//does, so remove i
-						// cell.values = jQuery.grep(cell.values, function(value) {
-							// return value != pValue;
-						// });
-					// }					                		
-				// }
-				// else{//single value, so set it to that
-					// cell.values = [pValue];
-				// }											
-			// }
-							
+									
 		}
 	
 		function Cell_Get(pX, pY){
@@ -432,8 +430,7 @@
 							
 							if (pValues.indexOf(value) > -1){
 								cell.element.children().eq(value-1).addClass(pClass);
-							}
-															
+							}															
 						});												
 					}							
 			}
@@ -457,12 +454,6 @@
 			setSelectedCellValue(pCell, pValues);
         };
 		
-		this.setcellvalue = function(pCell, pValuesArray) {						
-			var c = Cell_Get(pCell.X, pCell.Y);			
-			c.setvalues(pValuesArray);
-			c.draw();			
-        };
-
 		this.targetcell = function (pCell, pValues, pClass){
 			MarkCell(pCell, pValues, pClass);
 		}
@@ -474,10 +465,14 @@
 		this.selectcell = function (pCell){		
 			selectCell (pCell);		
 		}
-		
+
 		this.reset = function(){			
 			reset();			
 		};
+		
+		this.properties = function(pProperties){
+			properties(pProperties);
+		}
 		
         //</Public Functions>
 
