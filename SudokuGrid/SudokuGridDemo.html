@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+    <title>Sudoku Brute</title>
+	
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="jquery.SudokuGrid.css">
+	<script src="jquery.SudokuGrid.js"></script>
+	
+		
+		
+		</head>
+
+
+	        <script>
+            $(document).ready(function() {
+								
+				$("#grid").SudokuGrid
+				(				
+					{
+						cellValueChange: function(pCell,pValueArray){													
+							$("#solver").SudokuBrute("setcell", pCell, pValueArray);
+						}
+					}				
+				);
+							
+			});
+		</script>
+
+<body>
+		
+<h1>Sudoku Grid</h1>	
+
+<p>Select a cell by clicking it, or using arrow keys to move around,or by tabbing to the next cell.</p>
+<p>To set a cell value, click it and press 0-9, where 0 will empty the cell.</p>
+<p>For more information on this jQuery plugin refer to <a href="https://github.com/AndyStobirski/jQuery-Sudoku">https://github.com/AndyStobirski/jQuery-Sudoku</a>.</p>	
+	
+		
+	<div id="grid" />
+		
+</body>
+</html>
