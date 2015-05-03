@@ -44,7 +44,7 @@ $("#grid").SudokuGrid
 	(				
 		{
 			cellValueChange: function(pCell,pValueArray){													
-				$("#changededcell").val 
+				console.log
 				(
 					JSON.stringify(pCell)
 					+ " : " 
@@ -52,7 +52,7 @@ $("#grid").SudokuGrid
 				);
 			}
 			, cellSelected : function(pCell){										
-				$("#selectedcell").val(JSON.stringify(pCell));
+				console.log(JSON.stringify(pCell));
 			}				
 		}				
 	);		

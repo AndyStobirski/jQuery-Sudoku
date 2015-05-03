@@ -317,6 +317,8 @@
 			}
 			selectedCell = pCell;
 			CellHighlight (selectedCell, true);
+			
+			$(input).data("settings").cellSelected (selectedCell);		
 
 		}
 		
@@ -433,9 +435,7 @@
 				cell.element.children().addClass(pClass);
 			}
 			else{
-				
-				console.log (cell.element);
-				
+								
 				if  (
 						pValues.length == 1 
 						&& cell.values.length == 1
