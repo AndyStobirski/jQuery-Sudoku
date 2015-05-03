@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Sudoku Brute</title>	
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>	
+	<link rel="stylesheet" type="text/css" href="jquery.SudokuGrid.css">
+	<script src="jquery.SudokuGrid.js"></script>
+			
+	</head>
+
+		<script>
+		$(document).ready(function() {
+							
+			$("#grid").SudokuGrid
+			(				
+				{
+					cellValueChange: function(pCell,pValueArray){	
+	
+						$("#changededcell").val 
+						(
+							JSON.stringify(pCell)
+							+ " : " 
+							+ JSON.stringify(pValueArray)
+						);
+					}
+					, cellSelected : function(pCell){							
+
+						console.log (pCell);
+					
+						$("#selectedcell").val(JSON.stringify(pCell));
+					}				
+				}				
+			);					
+			$("#grid").SudokuGrid("reset");			
+			
+			$("#readonly").click(function(){
+				$("#grid").SudokuGrid("toggleReadOnly");
+			});
+							
+			$("#UnsolvedCellsShow").click(function(){		
+				$("#grid").SudokuGrid("toggleDisplayUnsolvedCells");
+			});			
+											
+			$("#reset").click(function(){
+				$("#grid").SudokuGrid("reset");
+			});			
+
+			$("#applyclass").click(function(){				
+				var selectedcell = $("#grid").SudokuGrid("getselectedcell");
+				var selectedclass = $("#classes").val();
+				if (selectedcell != null)
+					$("#grid").SudokuGrid("setcellclass" , selectedcell , selectedclass, null );
+			});					
+			
+			$("#clearclass").click(function(){				
+				var selectedcell = $("#grid").SudokuGrid("getselectedcell");
+				if (selectedcell != null)
+					$("#grid").SudokuGrid("clearcellclass" , selectedcell);
+			});								
+			
+		});
+		</script>
+		
+	<head>
+
+<body>
+		
+<h1>Sudoku Grid</h1>	
+<p>For more information on this jQuery plugin refer to <a href="https://github.com/AndyStobirski/jQuery-Sudoku/tree/master/SudokuGrid">https://github.com/AndyStobirski/jQuery-Sudoku/tree/master/SudokuGrid</a>.</p>	
+	
+<p>Selected Cell: <input type="text" name="selectedcell" readonly id="selectedcell"></p>
+<p>Changed Cell: <input type="text" name="changededcell" readonly id="changededcell"></p>
+<p><button type='button' id="readonly">Toggle Read Only State</button></p>		
+<p><button type='button' id="UnsolvedCellsShow">Toggle display Unsolved Cells state</button></p>		
+<p><button type='button' id="reset">Reset</button></p>			
+<p><select id="classes"><option value="CellGreen">CellGreen</option><option value="CellOrange">CellOrange</option><option value="CellBlue">CellBlue</option></select>&nbsp;&nbsp;&nbsp;<button type='button' id="applyclass">Apply class to selected cell</button></p>	
+<p><button type='button' id="clearclass">Clear classes from selected cell</button></p>	
+	<div id="grid" />
+		
+</body>
+</html>
