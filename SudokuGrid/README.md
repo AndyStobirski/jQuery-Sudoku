@@ -2,6 +2,9 @@
 
 This document describes the jQuery plugin jquery.SudokuGrid.js and it's accompanying css file (jquery.SudokuGrid.css). A live demo is located [here](http://www.evilscience.co.uk/AndyStobirski/SudokuGrid/SudokuGridDemo.html).
 
+SudokuGrid.js is a jQuery plugin that displays a customizable sudoku grid. Values can be set by user input or by plugin methods.
+
+
 **Configuration**
 
 The file *SudokuGridDemo.html* contains a demo of this plugin.
@@ -43,7 +46,7 @@ Usage of above events:
 $("#grid").SudokuGrid
 	(				
 		{
-			cellValueChange: function(pCell,pValueArray){													
+			cellValueChange: function(pCell,pValueArray){	//output the changed cell and the values												
 				console.log
 				(
 					JSON.stringify(pCell)
@@ -51,7 +54,7 @@ $("#grid").SudokuGrid
 					+ JSON.stringify(pValueArray)
 				);
 			}
-			, cellSelected : function(pCell){										
+			, cellSelected : function(pCell){ //output the selected cell										
 				console.log(JSON.stringify(pCell));
 			}				
 		}				
