@@ -1,6 +1,6 @@
 #jquery.SudokuGrid.js
 
-This document describes the jQuery plugin jquery.SudokuGrid.js and it's accompanying css file (jquery.SudokuGrid.css).
+This document describes the jQuery plugin jquery.SudokuGrid.js and it's accompanying css file (jquery.SudokuGrid.css). A live demo is located [here](http://www.evilscience.co.uk/AndyStobirski/SudokuGrid/SudokuGridDemo.html).
 
 **Configuration**
 
@@ -20,6 +20,9 @@ To set a cell value, click it and press 0-9, where 0 will empty the cell.
 
 **Methods**
 
+The following methods are available:
+
+*reset* - clears the Sudoku Grid. Usage:  ```$("#sudokugrid").SudokuGrid("reset");```
 
 **Events**
 
