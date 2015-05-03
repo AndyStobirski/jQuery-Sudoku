@@ -6,11 +6,8 @@
 }
 
 .readonly{
-	background-color:#F1F1F1;	
-
-	
+	background-color:#F1F1F1;		
 }
-
 
 #sudokugrid tbody > tr  > td {
 	height:60px;
@@ -53,9 +50,12 @@
 		box-sizing: border-box;	
 		vertical-align:top;
 }
+
 .cell{
 	font-size:3em;
 	box-sizing: border-box;
+	height:100%;
+	width:100%;
 }
 
 .CellGreen{

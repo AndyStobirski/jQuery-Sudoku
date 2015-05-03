@@ -26,7 +26,8 @@
 						$("#selectedcell").val(JSON.stringify(pCell));
 					}				
 				}				
-			);						
+			);					
+			$("#grid").SudokuGrid("reset");			
 			
 			$("#readonly").click(function(){
 				$("#grid").SudokuGrid("toggleReadOnly");
@@ -44,7 +45,7 @@
 				var selectedcell = $("#grid").SudokuGrid("getselectedcell");
 				var selectedclass = $("#classes").val();
 				if (selectedcell != null)
-					$("#grid").SudokuGrid("setcellclass" , selectedcell , selectedclass  );
+					$("#grid").SudokuGrid("setcellclass" , selectedcell , selectedclass, null );
 			});					
 			
 			$("#clearclass").click(function(){				

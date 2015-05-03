@@ -59,8 +59,8 @@
             this.data("SudokuGrid").setcell(pCell, pValuesArray);
         },
 		
-        setcellclass: function(pCell, pClass) {
-            this.data("SudokuGrid").setcellclass(pCell, pClass);
+        setcellclass: function(pCell, pClass, pValuesArray) {
+            this.data("SudokuGrid").setcellclass(pCell, pClass,pValuesArray);
         },		
 		
         clearcellclass: function(pCell) {
@@ -246,9 +246,18 @@
 						, setvalues : function(pValuesArray){							
 							this.values = pValuesArray;																					
 						}
-						, addClass: function (pClass){
+						, addClass: function (pClass, pValuesArray){
 							var el = this.element;
-							el.children().addClass(pClass);
+							
+							if (pValuesArray == null){//apply to all cells
+								el.children().addClass(pClass);
+							}
+							else{
+								for (k=0; k < pValuesArray.length; k++){//apply to cells containing values in pValueArray									
+									el.children().filter('div:contains(' + pValuesArray[k] + ')').addClass(pClass);
+									
+								}
+							}
 						}
 						, clearClass: function (){ //remove all but the base classes
 							var el = this.element;							
@@ -461,16 +470,7 @@
 				}
 			}		
 		}
-		
-		function setcellclass(pCell, pClass){		
-			Cell_Get(pCell.X,pCell.Y).addClass(pClass);			
-		}
-		
-		function clearcellclass (pCell){
-			Cell_Get(pCell.X,pCell.Y).clearClass();
-		}
-		
-		
+					
         //</private functions>
 
         //<Public Functions>
@@ -479,20 +479,18 @@
 			setSelectedCellValue(pCell, pValues);
         };
 		
-		this.setcellclass = function (pCell, pClass){
-			setcellclass(pCell, pClass);
+		this.setcellclass = function (pCell, pClass, pValuesArray){
+			Cell_Get(pCell.X,pCell.Y).addClass(pClass, pValuesArray);	
 		}
 		
 		this.clearcellclass = function (pCell){
-			clearcellclass(pCell);
+			Cell_Get(pCell.X,pCell.Y).clearClass();
 		}
 		
 		this.getselectedcell = function(){
-			console.log (selectedCell);
 			return selectedCell;
 		}
-		
-		
+				
 		this.toggleReadOnly = function(){			
 			$(input).data("settings").readOnly = !$(input).data("settings").readOnly;		
 			RefreshProperties();

@@ -25,7 +25,7 @@ The following methods are available:
 1. *reset* - clears the Sudoku Grid. Usage: ```$("#sudokugrid").SudokuGrid("reset");```
 2. *redraw* - redraws the entire Soduku Grid. Usage: ```$("#sudokugrid").SudokuGrid("redraw");```
 3. *setcellvalue* (Cell, ValuesArray) - sets the specified cell to the specified value. Usage: ```$("#sudokugrid").SudokuGrid("setcellvalue", {X:5,Y:5}, [5,6,7,8]);```
-4. *setcellclass* (Cell, Class) - applies the specified class to the specified cell. The class is contained in *jquery.SudokuGrid.css*. Usage:  ```$("#sudokugrid").SudokuGrid("setcellclass", "foobar");```
+4. *setcellclass* (Cell, Class, Values) - applies the specified class to the specified values in the specified cell. If Values is null, the class is applied to all cells. The class is contained in *jquery.SudokuGrid.css*. Usage:  ```$("#sudokugrid").SudokuGrid("setcellclass", "foobar", [5,6,7]);```
 5. *clearcellclass* (Cell) - removes from the cell any classes applied using the method *setcellclass*. Usage: ```$("#sudokugrid").SudokuGrid("clearcellclass", {X:3,Y:2});```
 6. *selectcell* (Cell) - selects the specified cell. Usage:  ```$("#sudokugrid").SudokuGrid("setcellvalue", {X:5,Y:5});```
 7. *getselectedcell* - returns the currently selected cell in the form of {X:x, Y:y}. Usage:  ```$("#sudokugrid").SudokuGrid("getselectedcell");```
