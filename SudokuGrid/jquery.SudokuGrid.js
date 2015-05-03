@@ -26,8 +26,7 @@
 		NUMUP:104,
 		NUMDOWN:98,
 		NUMLEFT:100,
-		NUMRIGHT:102
-		
+		NUMRIGHT:102	
     };
 
 	
@@ -52,28 +51,37 @@
             return this.data("SudokuGrid").reset();
         },		
 		
-        setcell: function(pCell, pValuesArray) {
+        redraw: function() {
+            return this.data("SudokuGrid").redraw();
+        },			
+		
+        setcellvalue: function(pCell, pValuesArray) {
             this.data("SudokuGrid").setcell(pCell, pValuesArray);
         },
 		
-		targetcell: function (pCell, pValues){
-			this.data("SudokuGrid").targetcell(pCell, pValues, "targetCell");
-		},
+        setcellclass: function(pCell, pClass) {
+            this.data("SudokuGrid").setcellclass(pCell, pClass);
+        },		
+		
+        clearcellclass: function(pCell) {
+            this.data("SudokuGrid").clearcellclass(pCell);
+        },				
 		
 		selectcell: function (pCell){
 			this.data("SudokuGrid").selectcell(pCell);
 		},
 		
-		sourcecell: function (pCell, pValues){
-			this.data("SudokuGrid").sourcecell(pCell, pValues, "sourceCell");
+		getselectedcell: function (pCell){
+			return this.data("SudokuGrid").getselectedcell();
 		},		
+								
+		toggleReadOnly: function(){
+			this.data("SudokuGrid").toggleReadOnly();
+		},
 		
-		properties: function (pProperties){
-			
-			console.log (pProperties);
-			
-			this.data("SudokuGrid").properties(pProperties);
-		},					
+		toggleDisplayUnsolvedCells: function(){			
+			this.data("SudokuGrid").toggleDisplayUnsolvedCells();			
+		},		
 		
         destroy: function() {
             if (this.data("SudokuGrid")) {
@@ -110,7 +118,7 @@
 		var selectedCell = null;
 		
 		var cellArray = [];
-				
+
 		//Build the control - a table
 		var $row;
 		$container_element = $("<table/>").prop("tabindex", 1).prop("id","sudokugrid");
@@ -120,8 +128,7 @@
 			for (x = 0; x <9;x++){
 				$('<td/>').appendTo($row)
 						  .data("coords", {X: x, Y: y})
-						  .mouseup(function(e)
-						  {
+						  .mouseup(function(e){
 							e.preventDefault();		
 							e.stopPropagation();							  
 							  selectCell($(this).data("coords"));
@@ -181,12 +188,8 @@
 					if ($(input).data("settings").readOnly)
 						return;
 			
-					if (selectedCell != null){
-						
-						setSelectedCellValue(selectedCell, [event.keyCode - 48]);
-						
-						console.log ("keypress");
-						
+					if (selectedCell != null){						
+						setSelectedCellValue(selectedCell, [event.keyCode - 48]);						
 						$(input).data("settings").cellValueChange (selectedCell,Cell_Get(selectedCell.X, selectedCell.Y).values);											
 					}
 	
@@ -210,18 +213,10 @@
 			}
 			else{
 				$container_element.removeClass("readonly");
-			}						
+			}									
+			redraw();
 		}
 		
-		function RedrawGrid(){
-			
-			for (x = 0; x < 9; x ++)
-				for (y = 0; y < 9; y ++)
-					if (cells[x][y].values.length > 1)
-						cells[x][y].draw();
-				
-			
-		}
 		
 		function properties (pProperties){		            
 			$(input).data("settings",  $.extend({}, DEFAULT_SETTINGS, pProperties || {}));				
@@ -251,6 +246,22 @@
 						, setvalues : function(pValuesArray){							
 							this.values = pValuesArray;																					
 						}
+						, addClass: function (pClass){
+							var el = this.element;
+							el.children().addClass(pClass);
+						}
+						, clearClass: function (){ //remove all but the base classes
+							var el = this.element;							
+							el.children().removeClass();
+							
+							if (el.children().length == 1){
+								el.children().addClass ("cell");
+							}
+							else{
+								el.children().addClass ("subcell");
+							}
+							
+						}						
 						, draw: function()//draw the cell based on it's values
 						{																		
 							var el = this.element;
@@ -297,8 +308,7 @@
 			}
 			selectedCell = pCell;
 			CellHighlight (selectedCell, true);
-			
-			$(input).data("settings").cellSelected (pCell);
+
 		}
 		
 		//
@@ -314,7 +324,6 @@
 			var cell = Cell_Get(pCell.X,pCell.Y);
 					
 			if (pSelect){
-				cell.element.children().removeClass("sourceCell targetCell");
 				cell.element.addClass("selected");
 			}
 			else{
@@ -440,11 +449,27 @@
 			for (x=0;x<9;x++){
 				for (y=0;y<9;y++){
 					cellArray[x][y].setvalues([1,2,3,4,5,6,7,8,9]);
-					console.log(cellArray[x][y].values);
 					cellArray[x][y].draw();
 				}
 			}		
 		}
+		
+		function redraw(){			
+			for (x=0;x<9;x++){
+				for (y=0;y<9;y++){
+					cellArray[x][y].draw();
+				}
+			}		
+		}
+		
+		function setcellclass(pCell, pClass){		
+			Cell_Get(pCell.X,pCell.Y).addClass(pClass);			
+		}
+		
+		function clearcellclass (pCell){
+			Cell_Get(pCell.X,pCell.Y).clearClass();
+		}
+		
 		
         //</private functions>
 
@@ -454,18 +479,42 @@
 			setSelectedCellValue(pCell, pValues);
         };
 		
-		this.targetcell = function (pCell, pValues, pClass){
-			MarkCell(pCell, pValues, pClass);
+		this.setcellclass = function (pCell, pClass){
+			setcellclass(pCell, pClass);
 		}
 		
-		this.sourcecell = function (pCell, pValues, pClass){
-			MarkCell(pCell, pValues, pClass);
+		this.clearcellclass = function (pCell){
+			clearcellclass(pCell);
+		}
+		
+		this.getselectedcell = function(){
+			console.log (selectedCell);
+			return selectedCell;
+		}
+		
+		
+		this.toggleReadOnly = function(){			
+			$(input).data("settings").readOnly = !$(input).data("settings").readOnly;		
+			RefreshProperties();
+		}
+		
+		this.toggleDisplayUnsolvedCells = function(){
+			$(input).data("settings").displayUnsolvedCells = !$(input).data("settings").displayUnsolvedCells;	
+			RefreshProperties();
+		}
+				
+		this.selectcell = function (pCell){		
+			selectCell (pCell);		
 		}
 		
 		this.selectcell = function (pCell){		
 			selectCell (pCell);		
-		}
+		}		
 
+		this.redraw = function(){			
+			redraw();			
+		};		
+		
 		this.reset = function(){			
 			reset();			
 		};

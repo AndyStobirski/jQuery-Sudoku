@@ -24,30 +24,34 @@
 					}
 					, cellSelected : function(pCell){										
 						$("#selectedcell").val(JSON.stringify(pCell));
-					}
-					, 
+					}				
 				}				
 			);						
 			
-			$("#readonlytrue").click(function(){
-				$("#grid").SudokuGrid("properties", {readOnly:true});
+			$("#readonly").click(function(){
+				$("#grid").SudokuGrid("toggleReadOnly");
 			});
-			
-			$("#readonlyfalse").click(function(){
-				$("#grid").SudokuGrid("properties", {readOnly:false});
-			});			
-			
+							
 			$("#UnsolvedCellsShow").click(function(){		
-				$("#grid").SudokuGrid("properties", {displayUnsolvedCells:true});
+				$("#grid").SudokuGrid("toggleDisplayUnsolvedCells");
 			});			
-			
-			$("#UnsolvedCellsHide").click(function(){
-				$("#grid").SudokuGrid("properties", {displayUnsolvedCells:false});
-			});						
-			
+											
 			$("#reset").click(function(){
 				$("#grid").SudokuGrid("reset");
+			});			
+
+			$("#applyclass").click(function(){				
+				var selectedcell = $("#grid").SudokuGrid("getselectedcell");
+				var selectedclass = $("#classes").val();
+				if (selectedcell != null)
+					$("#grid").SudokuGrid("setcellclass" , selectedcell , selectedclass  );
 			});					
+			
+			$("#clearclass").click(function(){				
+				var selectedcell = $("#grid").SudokuGrid("getselectedcell");
+				if (selectedcell != null)
+					$("#grid").SudokuGrid("clearcellclass" , selectedcell);
+			});								
 			
 		});
 		</script>
@@ -59,12 +63,13 @@
 <h1>Sudoku Grid</h1>	
 <p>For more information on this jQuery plugin refer to <a href="https://github.com/AndyStobirski/jQuery-Sudoku">https://github.com/AndyStobirski/jQuery-Sudoku</a>.</p>	
 	
-<p>Selected Cell: <input type="text" name="selectedcell" id="selectedcell"></p>
-<p>Changed Cell: <input type="text" name="changededcell" id="changededcell"></p>
-<p><button type='button' id="readonlytrue">Readonly true</button><button type='button' id="readonlyfalse">Readonly false</button></p>		
-<p><button type='button' id="UnsolvedCellsShow">displayUnsolvedCells true</button><button type='button' id="UnsolvedCellsHide">displayUnsolvedCells false</button></p>		
+<p>Selected Cell: <input type="text" name="selectedcell" readonly id="selectedcell"></p>
+<p>Changed Cell: <input type="text" name="changededcell" readonly id="changededcell"></p>
+<p><button type='button' id="readonly">Toggle Read Only State</button></p>		
+<p><button type='button' id="UnsolvedCellsShow">Toggle display Unsolved Cells state</button></p>		
 <p><button type='button' id="reset">Reset</button></p>			
-		
+<p><select id="classes"><option value="CellGreen">CellGreen</option><option value="CellOrange">CellOrange</option><option value="CellBlue">CellBlue</option></select>&nbsp;&nbsp;&nbsp;<button type='button' id="applyclass">Apply class to selected cell</button></p>	
+<p><button type='button' id="clearclass">Clear classes from selected cell</button></p>	
 	<div id="grid" />
 		
 </body>
